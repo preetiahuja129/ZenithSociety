@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ZenithSociety.Controllers.HomeController.RenderEventActivityModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container text-center">
+    <div class="jumbotron">
+        <h1>Event Schedule</h1>
+    </div>
+</div>
+
+
+<div class="row">
+    @foreach (var e in Model.GroupBy(item => item.Event.EventDate))
+            {
+        <div class=@e.Key.ToString("dddd") onclick="foldContent(this.className)">
+
+            <div class="container text-center" style="background-color:deepskyblue; color:#eee;">
+                <div class="col-md-5">
+                    <p>@e.Key.ToString("dddd MMM dd, yyyy")</p>
+                </div>
+                <div class="col-md-5">
+                    <p>Description</p>
+                </div>
+                <div class="col-md-2">
+                    <p><span class="glyphicon glyphicon-chevron-down"></span></p>
+                </div>
+            </div>
+
+
+            <div class="data" id=@e.Key.ToString("dddd")>
+                <table class="table">
+                    @foreach (var a in e)
+                    {
+                        <tr>
+                            <td class="eventTime">@a.Event.DateFrom.ToString("HH:mm tt") - @a.Event.DateTo.ToString("HH:mm tt")</td>
+                            <td class="activityDescr">@a.Activity.Description</td>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <td class="activityDescr">
+                                    <a href="/Events/Edit/@a.Event.EventId"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a href="/Events/Delete/@a.Event.EventId"><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
+                            }
+
+                        </tr>
+                    }
+                </table>
+            </div>
+            <br />
+        </div>
+    }
+</div>
+
+    <div class="homeBtnBox">
+        @if (User.IsInRole("Admin") || User.IsInRole("Member"))
+        {
+            <div  class="btn-group">
+                <a align="left" id="prevWk" asp-controller="Home" asp-action="index" asp-route-week="prevWk" data-ajax-method="GET" class="btn btn-primary">
+                    Prev
+                </a>
+            </div>
+            @*<div class="btn-group">
+                    <a id="thisWk" asp-controller="Home" asp-action="index" asp-route-week="thisWk" data-ajax-method="GET" class="btn btn-primary">
+                        This Week
+                    </a>
+                </div>*@
+            <div class="btn-group">
+                <a align="right" id="nxtWk" asp-controller="Home" asp-action="index" asp-route-week="nxtWk" data-ajax-method="GET" class="btn btn-primary">
+                    Next
+                </a>
+            </div>
+        }
+    </div>
+
+    

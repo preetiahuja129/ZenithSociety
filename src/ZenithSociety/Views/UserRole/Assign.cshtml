@@ -1,0 +1,33 @@
+@model UserRoleViewModel
+@using ZenithSociety.Models.UserRoleModels
+
+@{
+    ViewData["Title"] = "Assign";
+}
+
+<h2>Assign User to Role</h2>
+<div class="form-horizontal">
+    <hr />
+
+    <form asp-action="Assign" role="form" class="dl-horizontal">
+        <label asp-for="UserId" class="col-lg-3 col-sm-3 control-label"></label>
+        <div> 
+            <select asp-for="UserId" asp-items="@Model.Users" asp-route-id="" class="form-control">
+                <option>Please select</option>
+            </select>
+        </div>
+        <label asp-for="RoleId" class="col-lg-3 col-sm-3 control-label"></label>
+        <div>
+            <select asp-for="RoleId" asp-items="@Model.Roles" class="form-control">
+                <option>Please select</option>
+            </select>
+        </div>
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Assign</button>
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
